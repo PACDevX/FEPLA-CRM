@@ -80,22 +80,22 @@ $alumno = $result->fetch_assoc();
         <form action="./functions/updateAlumno.php" method="POST">
             <input type="hidden" name="id" value="<?php echo $alumno['id']; ?>">
 
-            <label for="nombre">Nombre:</label>
+            <label for="nombre">Nombre (*):</label>
             <input type="text" id="nombre" name="nombre" value="<?php echo htmlspecialchars($alumno['nombre']); ?>" required>
 
-            <label for="apellido1">Primer Apellido:</label>
+            <label for="apellido1">Primer Apellido (*):</label>
             <input type="text" id="apellido1" name="apellido1" value="<?php echo htmlspecialchars($alumno['apellido1']); ?>" required>
 
             <label for="apellido2">Segundo Apellido:</label>
-            <input type="text" id="apellido2" name="apellido2" value="<?php echo htmlspecialchars($alumno['apellido2']); ?>" required>
+            <input type="text" id="apellido2" name="apellido2" value="<?php echo htmlspecialchars($alumno['apellido2']); ?>">
 
-            <label for="email">Correo Electrónico:</label>
+            <label for="email">Correo Electrónico (*):</label>
             <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($alumno['email']); ?>" required>
 
-            <label for="telefono">Teléfono:</label>
+            <label for="telefono">Teléfono (*):</label>
             <input type="text" id="telefono" name="telefono" value="<?php echo htmlspecialchars($alumno['telefono']); ?>" required>
 
-            <label for="classSelect">Clase:</label>
+            <label for="classSelect">Clase (*):</label>
             <select id="classSelect" name="classSelect" required>
                 <?php
                 $result = $conn->query("SELECT DISTINCT clase FROM alumnos WHERE clase != ''");

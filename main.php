@@ -11,8 +11,8 @@ include './includes/dbConnection.php';
 $nombre = $_SESSION['nombre'];
 
 // Obtener algunas estadísticas
-$totalAlumnos = $conn->query("SELECT COUNT(*) AS total FROM alumnos")->fetch_assoc()['total'];
-$totalClases = $conn->query("SELECT COUNT(DISTINCT clase) AS total FROM alumnos")->fetch_assoc()['total'];
+$totalAlumnos = $conn->query("SELECT COUNT(*) AS total FROM alumnos WHERE nombre IS NOT NULL AND nombre != ''")->fetch_assoc()['total'];
+$totalClases = $conn->query("SELECT COUNT(DISTINCT clase) AS total FROM alumnos WHERE clase IS NOT NULL AND clase != ''")->fetch_assoc()['total'];
 $totalEmpresas = $conn->query("SELECT COUNT(*) AS total FROM empresas")->fetch_assoc()['total'];
 ?>
 
@@ -51,9 +51,9 @@ $totalEmpresas = $conn->query("SELECT COUNT(*) AS total FROM empresas")->fetch_a
         <div class="quick-access">
             <h2>Accesos Rápidos</h2>
             <ul>
-                <li><a href="gestionarAlumnos.php">Gestionar Alumnos</a></li>
-                <li><a href="gestionarEmpresas.php">Gestionar Empresas</a></li>
-                <li><a href="miPerfil.php">Mi Perfil</a></li>
+                <li><a href="gestionarAlumnos.php">Gestionar Alumnos (*)</a></li>
+                <li><a href="gestionarEmpresas.php">Gestionar Empresas (*)</a></li>
+                <li><a href="miPerfil.php">Mi Perfil (*)</a></li>
             </ul>
         </div>
 

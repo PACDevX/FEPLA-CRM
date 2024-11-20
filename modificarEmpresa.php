@@ -40,16 +40,16 @@ $stmt->close();
         <form action="./functions/updateEmpresa.php" method="POST">
             <input type="hidden" name="id" value="<?php echo htmlspecialchars($empresaId); ?>">
 
-            <label for="nombre">Nombre de la Empresa:</label>
+            <label for="nombre">Nombre de la Empresa (*):</label>
             <input type="text" id="nombre" name="nombre" value="<?php echo htmlspecialchars($nombre); ?>" required>
 
-            <label for="contacto_principal">Contacto Principal:</label>
+            <label for="contacto_principal">Contacto Principal (*):</label>
             <input type="text" id="contacto_principal" name="contacto_principal" value="<?php echo htmlspecialchars($contacto_principal); ?>" required>
 
-            <label for="email">Correo Electrónico:</label>
+            <label for="email">Correo Electrónico (*):</label>
             <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($email); ?>" required>
 
-            <label for="telefono">Teléfono:</label>
+            <label for="telefono">Teléfono (*):</label>
             <input type="text" id="telefono" name="telefono" value="<?php echo htmlspecialchars($telefono); ?>" required>
 
             <button type="submit" class="button">Guardar Cambios</button>

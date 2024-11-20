@@ -83,7 +83,7 @@ include './includes/dbConnection.php';
         <div class="section">
             <h2>Crear Clase</h2>
             <form action="./functions/createClass.php" method="POST">
-                <label for="className">Nombre de la Clase:</label>
+                <label for="className">Nombre de la Clase (*):</label>
                 <input type="text" id="className" name="className" required>
                 <button type="submit" class="button">Crear Clase</button>
             </form>
@@ -93,7 +93,7 @@ include './includes/dbConnection.php';
         <div class="section">
             <h2>Crear Alumno</h2>
             <form action="./functions/createAlumno.php" method="POST">
-                <label for="classSelect">Clase:</label>
+                <label for="classSelect">Clase (*):</label>
                 <select id="classSelect" name="classSelect" required>
                     <!-- Aquí se llenarán las opciones de clase desde la base de datos -->
                     <?php
@@ -103,19 +103,19 @@ include './includes/dbConnection.php';
                     }
                     ?>
                 </select>
-                <label for="nombre">Nombre del Alumno:</label>
+                <label for="nombre">Nombre del Alumno (*):</label>
                 <input type="text" id="nombre" name="nombre" required>
 
-                <label for="apellido1">Primer Apellido:</label>
+                <label for="apellido1">Primer Apellido (*):</label>
                 <input type="text" id="apellido1" name="apellido1" required>
 
                 <label for="apellido2">Segundo Apellido:</label>
-                <input type="text" id="apellido2" name="apellido2" required>
+                <input type="text" id="apellido2" name="apellido2">
 
-                <label for="email">Correo Electrónico:</label>
+                <label for="email">Correo Electrónico (*):</label>
                 <input type="email" id="email" name="email" required>
 
-                <label for="telefono">Teléfono:</label>
+                <label for="telefono">Teléfono (*):</label>
                 <input type="text" id="telefono" name="telefono" required>
 
                 <button type="submit" class="button">Crear Alumno</button>
@@ -126,7 +126,7 @@ include './includes/dbConnection.php';
         <div class="section">
             <h2>Mover Alumno</h2>
             <form action="./functions/moveAlumno.php" method="POST">
-                <label for="alumnoSelect">Seleccionar Alumno:</label>
+                <label for="alumnoSelect">Seleccionar Alumno (*):</label>
                 <select id="alumnoSelect" name="alumnoSelect" required>
                     <!-- Aquí se llenarán las opciones de alumnos con nombre, apellidos y clase desde la base de datos -->
                     <?php
@@ -139,8 +139,8 @@ include './includes/dbConnection.php';
                     ?>
                 </select>
 
-                <label for="newClass">Nueva Clase:</label>
-                <select id="newClass" name="newClass">
+                <label for="newClass">Nueva Clase (*):</label>
+                <select id="newClass" name="newClass" required>
                     <!-- Opciones de clases -->
                     <?php
                     $result = $conn->query("SELECT DISTINCT clase FROM alumnos WHERE clase != ''");
@@ -158,7 +158,7 @@ include './includes/dbConnection.php';
         <div class="section">
             <h2>Gestionar Alumnos</h2>
             <form action="modificarAlumno.php" method="GET">
-                <label for="alumnoSelect">Seleccionar Alumno:</label>
+                <label for="alumnoSelect">Seleccionar Alumno (*):</label>
                 <select id="alumnoSelect" name="id" required>
                     <!-- Aquí se llenarán las opciones de alumnos con nombre, apellidos y clase desde la base de datos -->
                     <?php

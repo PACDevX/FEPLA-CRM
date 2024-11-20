@@ -86,16 +86,16 @@ $stmt->close();
         <h1>Mi Perfil</h1>
 
         <form action="./functions/updatePerfil.php" method="POST">
-            <label for="nombre">Nombre:</label>
+            <label for="nombre">Nombre (*):</label>
             <input type="text" id="nombre" name="nombre" value="<?php echo htmlspecialchars($nombre); ?>" required>
 
-            <label for="email">Correo Electrónico:</label>
+            <label for="email">Correo Electrónico (*):</label>
             <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($email); ?>" required>
 
-            <label for="apellido">Apellido:</label>
+            <label for="apellido">Apellido (*):</label>
             <input type="text" id="apellido" name="apellido" value="<?php echo htmlspecialchars($apellido); ?>" required>
 
-            <label for="descripcion">Descripción:</label>
+            <label for="descripcion">Descripción (*):</label>
             <textarea id="descripcion" name="descripcion" required><?php echo htmlspecialchars($descripcion); ?></textarea>
 
             <button type="submit" class="button">Guardar Cambios</button>

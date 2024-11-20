@@ -77,16 +77,16 @@ include './includes/dbConnection.php';
         <div class="section">
             <h2>Crear Empresa</h2>
             <form action="./functions/createEmpresa.php" method="POST">
-                <label for="nombre">Nombre de la Empresa:</label>
+                <label for="nombre">Nombre de la Empresa (*):</label>
                 <input type="text" id="nombre" name="nombre" required>
 
-                <label for="contacto_principal">Contacto Principal:</label>
+                <label for="contacto_principal">Contacto Principal (*):</label>
                 <input type="text" id="contacto_principal" name="contacto_principal" required>
 
-                <label for="email">Correo Electrónico:</label>
+                <label for="email">Correo Electrónico (*):</label>
                 <input type="email" id="email" name="email" required>
 
-                <label for="telefono">Teléfono:</label>
+                <label for="telefono">Teléfono (*):</label>
                 <input type="text" id="telefono" name="telefono" required>
 
                 <button type="submit" class="button">Crear Empresa</button>
@@ -97,7 +97,7 @@ include './includes/dbConnection.php';
         <div class="section">
             <h2>Gestionar Empresas</h2>
             <form action="./functions/manageEmpresa.php" method="POST">
-                <label for="empresaSelect">Seleccionar Empresa:</label>
+                <label for="empresaSelect">Seleccionar Empresa (*):</label>
                 <select id="empresaSelect" name="empresaSelect" required>
                     <!-- Aquí se llenarán las opciones de empresas desde la base de datos -->
                     <?php
