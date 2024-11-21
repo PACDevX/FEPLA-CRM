@@ -3,45 +3,31 @@
 
 session_start();
 if (!isset($_SESSION['user_id'])) {
-    header("Location: index.html");
+    header("Location: ../index.html");
     exit;
 }
 
 include '../includes/dbConnection.php';
 
-function showPopup($message, $type) {
-    echo "<script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const popup = document.createElement('div');
-            popup.className = 'popup-message ' + '$type';
-            popup.textContent = '$message';
-            document.body.appendChild(popup);
-            setTimeout(() => { popup.style.opacity = '0'; setTimeout(() => popup.remove(), 500); }, 3000);
-        });
-    </script>";
-}
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['asignacionId'])) {
+        $asignacionId = trim($_POST['asignacionId']);
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Verificar que 'alumnoId' está definido
-    if (isset($_POST['alumnoId'])) {
-        $alumnoId = trim($_POST['alumnoId']);
+        // Eliminar la asignación de la tabla
+        $deleteSql = "DELETE FROM asignaciones WHERE id = ?";
+        $stmt = $conn->prepare($deleteSql);
+        $stmt->bind_param("i", $asignacionId);
 
-        // Eliminar la asignación del alumno
-        $deleteSql = "DELETE FROM asignaciones WHERE alumno_id = ?";
-        $deleteStmt = $conn->prepare($deleteSql);
-        $deleteStmt->bind_param("i", $alumnoId);
-
-        if ($deleteStmt->execute()) {
-            showPopup("Alumno eliminado de las prácticas satisfactoriamente.", "success");
+        if ($stmt->execute()) {
+            header("Location: ../enviarPracticas.php?message=Prácticas%20eliminadas%20satisfactoriamente&type=success");
         } else {
-            showPopup("Error al eliminar las prácticas del alumno.", "error");
+            header("Location: ../enviarPracticas.php?message=Error%20al%20eliminar%20las%20prácticas&type=error");
         }
 
-        $deleteStmt->close();
+        $stmt->close();
     } else {
-        showPopup("Error: Datos insuficientes para eliminar las prácticas.", "error");
+        header("Location: ../enviarPracticas.php?message=Error:%20Datos%20insuficientes&type=error");
     }
 }
 
 $conn->close();
-?>

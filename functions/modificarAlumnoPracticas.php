@@ -3,12 +3,13 @@
 
 session_start();
 if (!isset($_SESSION['user_id'])) {
-    header("Location: index.html");
+    header("Location: ../index.html");
     exit;
 }
 
 include '../includes/dbConnection.php';
 
+// Función para mostrar un popup
 function showPopup($message, $type) {
     echo "<script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -21,28 +22,26 @@ function showPopup($message, $type) {
     </script>";
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Verificar que 'alumnoId' y 'empresaId' están definidos
-    if (isset($_POST['alumnoId']) && isset($_POST['empresaId'])) {
-        $alumnoId = trim($_POST['alumnoId']);
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['asignacionId']) && isset($_POST['empresaId'])) {
+        $asignacionId = trim($_POST['asignacionId']);
         $empresaId = trim($_POST['empresaId']);
 
-        // Modificar la empresa asignada al alumno
-        $updateSql = "UPDATE asignaciones SET empresa_id = ? WHERE alumno_id = ?";
-        $updateStmt = $conn->prepare($updateSql);
-        $updateStmt->bind_param("ii", $empresaId, $alumnoId);
+        // Actualizar la asignación con la nueva empresa
+        $updateSql = "UPDATE asignaciones SET empresa_id = ? WHERE id = ?";
+        $stmt = $conn->prepare($updateSql);
+        $stmt->bind_param("ii", $empresaId, $asignacionId);
 
-        if ($updateStmt->execute()) {
-            showPopup("Prácticas modificadas satisfactoriamente.", "success");
+        if ($stmt->execute()) {
+            header("Location: ../enviarPracticas.php?message=Prácticas%20modificadas%20satisfactoriamente&type=success");
         } else {
-            showPopup("Error al modificar las prácticas.", "error");
+            header("Location: ../enviarPracticas.php?message=Error%20al%20modificar%20las%20prácticas&type=error");
         }
 
-        $updateStmt->close();
+        $stmt->close();
     } else {
-        showPopup("Error: Datos insuficientes para modificar las prácticas.", "error");
+        header("Location: ../enviarPracticas.php?message=Error:%20Datos%20insuficientes&type=error");
     }
 }
 
 $conn->close();
-?>
