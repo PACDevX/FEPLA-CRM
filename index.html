@@ -5,33 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio de Sesión - FEPLA CRM</title>
     <link rel="stylesheet" href="./assets/css/login.css">
-    <script>
-        // Mostrar el popup con el mensaje de éxito o error
-        function showPopup(message, type) {
-            const popup = document.createElement("div");
-            popup.className = `popup-message ${type}`;
-            popup.textContent = message;
-            document.body.appendChild(popup);
-
-            setTimeout(() => {
-                popup.style.opacity = '0';
-                setTimeout(() => popup.remove(), 500);
-            }, 3000);
-        }
-
-        // Leer el parámetro de mensaje de la URL
-        document.addEventListener("DOMContentLoaded", () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const errorMessage = urlParams.get("error");
-            const successMessage = urlParams.get("message");
-
-            if (errorMessage) {
-                showPopup(decodeURIComponent(errorMessage), 'error');
-            } else if (successMessage === 'registered') {
-                showPopup('Registro exitoso. ¡Puedes iniciar sesión ahora!', 'success');
-            }
-        });
-    </script>
+    <script src="./assets/js/popups.js"></script>
 </head>
 <body>
     <div class="container">

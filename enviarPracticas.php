@@ -8,19 +8,6 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 include './includes/dbConnection.php';
-
-// Función para mostrar el popup
-function showPopup($message, $type) {
-    echo "<script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const popup = document.createElement('div');
-            popup.className = 'popup-message ' + '$type';
-            popup.textContent = '$message';
-            document.body.appendChild(popup);
-            setTimeout(() => { popup.style.opacity = '0'; setTimeout(() => popup.remove(), 500); }, 3000);
-        });
-    </script>";
-}
 ?>
 
 <!DOCTYPE html>
@@ -31,27 +18,8 @@ function showPopup($message, $type) {
     <title>Enviar Alumnos a Prácticas - FEPLA CRM</title>
     <link rel="stylesheet" href="./assets/css/main.css">
     <link rel="stylesheet" href="./assets/css/header.css">
+    <script src="./assets/js/popups.js" defer></script> <!-- Usando el archivo popups.js -->
     <style>
-        /* Estilos para el popup */
-        .popup-message {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 14px;
-            opacity: 1;
-            transition: opacity 0.5s ease;
-            z-index: 1000;
-            color: #fff;
-        }
-        .popup-message.error {
-            background-color: #f44336;
-        }
-        .popup-message.success {
-            background-color: #4CAF50;
-        }
         /* Estilos para la vista gráfica */
         .view-table {
             width: 100%;

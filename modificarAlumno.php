@@ -1,19 +1,3 @@
-<?php
-// modificarAlumno.php
-
-session_start();
-if (!isset($_SESSION['user_id'])) {
-    header("Location: index.html");
-    exit;
-}
-
-include './includes/dbConnection.php';
-
-$alumnoId = $_GET['id'];
-$result = $conn->query("SELECT * FROM alumnos WHERE id = $alumnoId");
-$alumno = $result->fetch_assoc();
-?>
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -22,32 +6,7 @@ $alumno = $result->fetch_assoc();
     <title>Modificar Alumno - FEPLA CRM</title>
     <link rel="stylesheet" href="./assets/css/main.css">
     <link rel="stylesheet" href="./assets/css/header.css">
-    <script>
-        // Función para mostrar el popup
-        function showPopup(message, type) {
-            const popup = document.createElement("div");
-            popup.className = `popup-message ${type}`;
-            popup.textContent = message;
-            document.body.appendChild(popup);
-
-            // Desaparecer el popup después de 3 segundos
-            setTimeout(() => {
-                popup.style.opacity = '0';
-                setTimeout(() => popup.remove(), 500);
-            }, 3000);
-        }
-
-        // Leer los parámetros de la URL
-        document.addEventListener("DOMContentLoaded", () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const message = urlParams.get("message");
-            const type = urlParams.get("type");
-
-            if (message && type) {
-                showPopup(decodeURIComponent(message), type);
-            }
-        });
-    </script>
+    <script src="./assets/js/popups.js" defer></script> <!-- Llamada al archivo externo -->
     <style>
         /* Estilos para el popup */
         .popup-message {
