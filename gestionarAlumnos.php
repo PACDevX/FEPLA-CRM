@@ -8,9 +8,12 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 include './includes/dbConnection.php';
+<<<<<<< HEAD
 
 // Obtener el ID del profesor de la sesión
 $profesorId = $_SESSION['user_id'];
+=======
+>>>>>>> a6ead99ffbf64f87010048c87d2ccee2fe4f7c47
 ?>
 
 <!DOCTYPE html>
@@ -58,11 +61,17 @@ $profesorId = $_SESSION['user_id'];
             <form action="./functions/createAlumno.php" method="POST">
                 <label for="classSelect">Clase (*):</label>
                 <select id="classSelect" name="classSelect" required>
+<<<<<<< HEAD
                     <!-- Mostrar clases relacionadas con el profesor actual -->
                     <?php
                     $result = $conn->query("SELECT DISTINCT clase 
                                             FROM alumnos 
                                             WHERE clase != '' AND profesor_id = $profesorId");
+=======
+                    <!-- Aquí se llenarán las opciones de clase desde la base de datos -->
+                    <?php
+                    $result = $conn->query("SELECT DISTINCT clase FROM alumnos WHERE clase != ''");
+>>>>>>> a6ead99ffbf64f87010048c87d2ccee2fe4f7c47
                     while ($row = $result->fetch_assoc()) {
                         echo "<option value='" . htmlspecialchars($row['clase']) . "'>" . htmlspecialchars($row['clase']) . "</option>";
                     }
@@ -93,11 +102,17 @@ $profesorId = $_SESSION['user_id'];
             <form action="./functions/moveAlumno.php" method="POST">
                 <label for="alumnoSelect">Seleccionar Alumno (*):</label>
                 <select id="alumnoSelect" name="alumnoSelect" required>
+<<<<<<< HEAD
                     <!-- Mostrar alumnos del profesor actual -->
                     <?php
                     $result = $conn->query("SELECT id, nombre, apellido1, apellido2, clase 
                                             FROM alumnos 
                                             WHERE profesor_id = $profesorId AND nombre != ''");
+=======
+                    <!-- Aquí se llenarán las opciones de alumnos con nombre, apellidos y clase desde la base de datos -->
+                    <?php
+                    $result = $conn->query("SELECT id, nombre, apellido1, apellido2, clase FROM alumnos WHERE nombre != ''");
+>>>>>>> a6ead99ffbf64f87010048c87d2ccee2fe4f7c47
                     while ($row = $result->fetch_assoc()) {
                         echo "<option value='" . htmlspecialchars($row['id']) . "'>" .
                             htmlspecialchars($row['nombre'] . ' ' . $row['apellido1'] . ' ' . $row['apellido2'] . ' - ' . $row['clase']) .
@@ -108,11 +123,17 @@ $profesorId = $_SESSION['user_id'];
 
                 <label for="newClass">Nueva Clase (*):</label>
                 <select id="newClass" name="newClass" required>
+<<<<<<< HEAD
                     <!-- Mostrar clases relacionadas con el profesor actual -->
                     <?php
                     $result = $conn->query("SELECT DISTINCT clase 
                                             FROM alumnos 
                                             WHERE clase != '' AND profesor_id = $profesorId");
+=======
+                    <!-- Opciones de clases -->
+                    <?php
+                    $result = $conn->query("SELECT DISTINCT clase FROM alumnos WHERE clase != ''");
+>>>>>>> a6ead99ffbf64f87010048c87d2ccee2fe4f7c47
                     while ($row = $result->fetch_assoc()) {
                         echo "<option value='" . htmlspecialchars($row['clase']) . "'>" . htmlspecialchars($row['clase']) . "</option>";
                     }
@@ -129,11 +150,17 @@ $profesorId = $_SESSION['user_id'];
             <form action="modificarAlumno.php" method="GET">
                 <label for="alumnoSelect">Seleccionar Alumno (*):</label>
                 <select id="alumnoSelect" name="id" required>
+<<<<<<< HEAD
                     <!-- Mostrar alumnos del profesor actual -->
                     <?php
                     $result = $conn->query("SELECT id, nombre, apellido1, apellido2, clase 
                                             FROM alumnos 
                                             WHERE profesor_id = $profesorId AND nombre != ''");
+=======
+                    <!-- Aquí se llenarán las opciones de alumnos con nombre, apellidos y clase desde la base de datos -->
+                    <?php
+                    $result = $conn->query("SELECT id, nombre, apellido1, apellido2, clase FROM alumnos WHERE nombre != ''");
+>>>>>>> a6ead99ffbf64f87010048c87d2ccee2fe4f7c47
                     while ($row = $result->fetch_assoc()) {
                         echo "<option value='" . htmlspecialchars($row['id']) . "'>" .
                             htmlspecialchars($row['nombre'] . ' ' . $row['apellido1'] . ' ' . $row['apellido2'] . ' - ' . $row['clase']) .
@@ -145,6 +172,10 @@ $profesorId = $_SESSION['user_id'];
                 <button type="submit" name="action" value="delete" class="button">Eliminar Alumno</button>
                 <button type="submit" class="button">Modificar Datos</button>
             </form>
+<<<<<<< HEAD
+=======
+
+>>>>>>> a6ead99ffbf64f87010048c87d2ccee2fe4f7c47
         </div>
     </div>
 </body>

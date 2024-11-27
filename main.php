@@ -9,6 +9,7 @@ if (!isset($_SESSION['user_id'])) {
 
 include './includes/dbConnection.php';
 $nombre = $_SESSION['nombre'];
+<<<<<<< HEAD
 $profesorId = $_SESSION['user_id'];
 
 // Obtener estadísticas relacionadas con el profesor actual
@@ -21,6 +22,12 @@ $totalClases = $conn->query("SELECT COUNT(DISTINCT clase) AS total
                              WHERE clase IS NOT NULL AND clase != '' AND profesor_id = $profesorId")->fetch_assoc()['total'];
 
 // Total de empresas (común para todos los profesores)
+=======
+
+// Obtener algunas estadísticas
+$totalAlumnos = $conn->query("SELECT COUNT(*) AS total FROM alumnos WHERE nombre IS NOT NULL AND nombre != ''")->fetch_assoc()['total'];
+$totalClases = $conn->query("SELECT COUNT(DISTINCT clase) AS total FROM alumnos WHERE clase IS NOT NULL AND clase != ''")->fetch_assoc()['total'];
+>>>>>>> a6ead99ffbf64f87010048c87d2ccee2fe4f7c47
 $totalEmpresas = $conn->query("SELECT COUNT(*) AS total FROM empresas")->fetch_assoc()['total'];
 ?>
 

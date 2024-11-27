@@ -8,9 +8,12 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 include './includes/dbConnection.php';
+<<<<<<< HEAD
 
 // Obtener el ID del profesor de la sesión
 $profesorId = $_SESSION['user_id'];
+=======
+>>>>>>> a6ead99ffbf64f87010048c87d2ccee2fe4f7c47
 ?>
 
 <!DOCTYPE html>
@@ -53,10 +56,15 @@ $profesorId = $_SESSION['user_id'];
             <label for="alumnoId">Seleccionar Alumno:</label>
             <select id="alumnoId" name="alumnoId" required>
                 <?php
+<<<<<<< HEAD
                 // Mostrar solo los alumnos del profesor en sesión
                 $result = $conn->query("SELECT id, nombre, apellido1, apellido2 
                                         FROM alumnos 
                                         WHERE profesor_id = $profesorId AND nombre IS NOT NULL AND nombre != ''");
+=======
+                // Asegurarte de que se están mostrando los alumnos correctos
+                $result = $conn->query("SELECT id, nombre, apellido1, apellido2 FROM alumnos WHERE nombre IS NOT NULL AND nombre != ''");
+>>>>>>> a6ead99ffbf64f87010048c87d2ccee2fe4f7c47
                 while ($row = $result->fetch_assoc()) {
                     echo "<option value='" . htmlspecialchars($row['id']) . "'>" .
                         htmlspecialchars($row['nombre'] . ' ' . $row['apellido1'] . ' ' . $row['apellido2']) . "</option>";
@@ -67,7 +75,10 @@ $profesorId = $_SESSION['user_id'];
             <label for="empresaId">Seleccionar Empresa:</label>
             <select id="empresaId" name="empresaId" required>
                 <?php
+<<<<<<< HEAD
                 // Mostrar todas las empresas (globales)
+=======
+>>>>>>> a6ead99ffbf64f87010048c87d2ccee2fe4f7c47
                 $result = $conn->query("SELECT id, nombre FROM empresas");
                 while ($row = $result->fetch_assoc()) {
                     echo "<option value='" . htmlspecialchars($row['id']) . "'>" . htmlspecialchars($row['nombre']) . "</option>";
@@ -90,6 +101,7 @@ $profesorId = $_SESSION['user_id'];
             </thead>
             <tbody>
                 <?php
+<<<<<<< HEAD
                 // Mostrar asignaciones solo del profesor en sesión
                 $result = $conn->query("SELECT asignaciones.id AS asignacion_id, 
                                                alumnos.nombre, alumnos.apellido1, alumnos.apellido2, 
@@ -98,6 +110,13 @@ $profesorId = $_SESSION['user_id'];
                                         JOIN alumnos ON asignaciones.alumno_id = alumnos.id
                                         JOIN empresas ON asignaciones.empresa_id = empresas.id
                                         WHERE asignaciones.profesor_id = $profesorId");
+=======
+                // Consulta para obtener las asignaciones de los alumnos a las empresas
+                $result = $conn->query("SELECT asignaciones.id AS asignacion_id, alumnos.nombre, alumnos.apellido1, alumnos.apellido2, empresas.id AS empresa_id, empresas.nombre AS empresa_nombre
+                                        FROM asignaciones
+                                        JOIN alumnos ON asignaciones.alumno_id = alumnos.id
+                                        JOIN empresas ON asignaciones.empresa_id = empresas.id");
+>>>>>>> a6ead99ffbf64f87010048c87d2ccee2fe4f7c47
                 while ($row = $result->fetch_assoc()) {
                     echo "<tr>";
                     echo "<td>" . htmlspecialchars($row['nombre'] . ' ' . $row['apellido1'] . ' ' . $row['apellido2']) . "</td>";
@@ -105,14 +124,22 @@ $profesorId = $_SESSION['user_id'];
                     echo "<form action='./functions/modificarAlumnoPracticas.php' method='POST' class='inline-form'>";
                     echo "<input type='hidden' name='asignacionId' value='" . htmlspecialchars($row['asignacion_id']) . "'>";
                     echo "<select name='empresaId'>";
+<<<<<<< HEAD
 
+=======
+                    
+>>>>>>> a6ead99ffbf64f87010048c87d2ccee2fe4f7c47
                     // Generar las opciones de empresa
                     $empresas = $conn->query("SELECT id, nombre FROM empresas");
                     while ($empresa = $empresas->fetch_assoc()) {
                         $selected = ($empresa['id'] == $row['empresa_id']) ? "selected" : "";
                         echo "<option value='" . htmlspecialchars($empresa['id']) . "' $selected>" . htmlspecialchars($empresa['nombre']) . "</option>";
                     }
+<<<<<<< HEAD
 
+=======
+                    
+>>>>>>> a6ead99ffbf64f87010048c87d2ccee2fe4f7c47
                     echo "</select>";
                     echo "<button type='submit' class='button'>Modificar</button>";
                     echo "</form>";
