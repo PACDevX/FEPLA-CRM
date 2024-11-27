@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             $_SESSION['is_root'] = true; // Marcar como superusuario
 
                             // Redirigir al panel de superusuarios
-                            header("Location: ../MODDER-PROFESORES/index.html");
+                            header("Location: ../MODDER-PROFESORES/index.php");
                             exit;
                         } else {
                             $error_message = "Correo o contraseña incorrecta.";
