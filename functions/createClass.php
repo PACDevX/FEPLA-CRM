@@ -11,7 +11,6 @@ include '../includes/dbConnection.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $className = trim($_POST['className']);
-<<<<<<< HEAD
     $profesorId = $_SESSION['user_id']; // Obtener el id del profesor desde la sesión
 
     if (!empty($className)) {
@@ -19,14 +18,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $checkSql = "SELECT COUNT(*) FROM alumnos WHERE clase = ? AND profesor_id = ?";
         $checkStmt = $conn->prepare($checkSql);
         $checkStmt->bind_param("si", $className, $profesorId);
-=======
-
-    if (!empty($className)) {
-        // Comprobar si la clase ya existe
-        $checkSql = "SELECT COUNT(*) FROM alumnos WHERE clase = ?";
-        $checkStmt = $conn->prepare($checkSql);
-        $checkStmt->bind_param("s", $className);
->>>>>>> a6ead99ffbf64f87010048c87d2ccee2fe4f7c47
         $checkStmt->execute();
         $checkStmt->bind_result($count);
         $checkStmt->fetch();
@@ -34,7 +25,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if ($count > 0) {
             // Si la clase ya existe, mostrar un popup de error
-<<<<<<< HEAD
             header("Location: ../gestionarAlumnos.php?message=Esta%20clase%20ya%20existe%20para%20este%20profesor&type=error");
         } else {
             // Si la clase no existe, proceder a insertarla
@@ -42,14 +32,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $sql = "INSERT INTO alumnos (clase, profesor_id) VALUES (?, ?)";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("si", $className, $profesorId);
-=======
-            header("Location: ../gestionarAlumnos.php?message=Esta%20clase%20ya%20existe&type=error");
-        } else {
-            // Si la clase no existe, proceder a insertarla
-            $sql = "INSERT INTO alumnos (clase) VALUES (?)";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param("s", $className);
->>>>>>> a6ead99ffbf64f87010048c87d2ccee2fe4f7c47
 
             if ($stmt->execute()) {
                 header("Location: ../gestionarAlumnos.php?message=Clase%20creada%20exitosamente&type=success");
