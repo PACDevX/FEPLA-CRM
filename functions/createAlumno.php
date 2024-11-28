@@ -16,10 +16,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $apellido2 = trim($_POST['apellido2']);
     $email = trim($_POST['email']);
     $telefono = trim($_POST['telefono']);
-    $profesorId = $_SESSION['user_id']; // Obtener el id del profesor desde la sesión
+    $profesorId = $_SESSION['user_id'];
 
     if (!empty($classSelect) && !empty($nombre) && !empty($apellido1) && !empty($email) && !empty($telefono)) {
-        // Verificar si el correo electrónico ya existe para este profesor
         $checkSql = "SELECT COUNT(*) FROM alumnos WHERE email = ? AND profesor_id = ?";
         $checkStmt = $conn->prepare($checkSql);
         $checkStmt->bind_param("si", $email, $profesorId);
@@ -29,10 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $checkStmt->close();
 
         if ($count > 0) {
-            // Si el correo ya existe, redirigir con un mensaje de error
             header("Location: ../gestionarAlumnos.php?message=El%20correo%20ya%20existe&type=error");
         } else {
-            // Preparar la consulta para insertar un alumno
             $sql = "INSERT INTO alumnos (nombre, apellido1, apellido2, email, telefono, clase, profesor_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("ssssssi", $nombre, $apellido1, $apellido2, $email, $telefono, $classSelect, $profesorId);
@@ -42,7 +39,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             } else {
                 header("Location: ../gestionarAlumnos.php?message=Error%20al%20crear%20el%20alumno&type=error");
             }
-
             $stmt->close();
         }
     } else {

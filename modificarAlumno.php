@@ -1,3 +1,54 @@
+<?php
+// modificarAlumno.php
+
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: index.html");
+    exit;
+}
+
+include './includes/dbConnection.php';
+
+// Obtener el ID del profesor desde la sesión
+$profesorId = $_SESSION['user_id'];
+
+// Obtener el ID del alumno de la solicitud GET
+if (!isset($_GET['id']) || empty($_GET['id'])) {
+    header("Location: gestionarAlumnos.php?message=Alumno%20no%20encontrado&type=error");
+    exit;
+}
+
+$alumnoId = intval($_GET['id']);
+
+// Comprobar si el alumno pertenece al profesor en sesión
+$sql = "SELECT * FROM alumnos WHERE id = ? AND profesor_id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("ii", $alumnoId, $profesorId);
+$stmt->execute();
+$result = $stmt->get_result();
+$alumno = $result->fetch_assoc();
+
+if (!$alumno) {
+    header("Location: gestionarAlumnos.php?message=Acceso%20no%20autorizado&type=error");
+    exit;
+}
+
+// Obtener las clases disponibles para el profesor actual
+$clases = [];
+$classQuery = "SELECT DISTINCT clase FROM alumnos WHERE profesor_id = ? AND clase != ''";
+$classStmt = $conn->prepare($classQuery);
+$classStmt->bind_param("i", $profesorId);
+$classStmt->execute();
+$classResult = $classStmt->get_result();
+while ($row = $classResult->fetch_assoc()) {
+    $clases[] = $row['clase'];
+}
+
+$classStmt->close();
+$stmt->close();
+$conn->close();
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -6,29 +57,8 @@
     <title>Modificar Alumno - FEPLA CRM</title>
     <link rel="stylesheet" href="./assets/css/main.css">
     <link rel="stylesheet" href="./assets/css/header.css">
-    <script src="./assets/js/popups.js" defer></script> <!-- Llamada al archivo externo -->
-    <style>
-        /* Estilos para el popup */
-        .popup-message {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 14px;
-            opacity: 1;
-            transition: opacity 0.5s ease;
-            z-index: 1000;
-            color: #fff;
-        }
-        .popup-message.success {
-            background-color: #4CAF50; /* Verde para éxito */
-        }
-        .popup-message.error {
-            background-color: #f44336; /* Rojo para errores */
-        }
-    </style>
+    <link rel="stylesheet" href="./assets/css/popups.css">
+    <script src="./assets/js/popups.js" defer></script>
 </head>
 <body>
     <?php include './includes/header.php'; ?>
@@ -56,13 +86,12 @@
 
             <label for="classSelect">Clase (*):</label>
             <select id="classSelect" name="classSelect" required>
-                <?php
-                $result = $conn->query("SELECT DISTINCT clase FROM alumnos WHERE clase != ''");
-                while ($row = $result->fetch_assoc()) {
-                    $selected = ($row['clase'] === $alumno['clase']) ? 'selected' : '';
-                    echo "<option value='" . htmlspecialchars($row['clase']) . "' $selected>" . htmlspecialchars($row['clase']) . "</option>";
-                }
-                ?>
+                <?php foreach ($clases as $clase): ?>
+                    <option value="<?php echo htmlspecialchars($clase); ?>"
+                        <?php echo ($clase === $alumno['clase']) ? 'selected' : ''; ?>>
+                        <?php echo htmlspecialchars($clase); ?>
+                    </option>
+                <?php endforeach; ?>
             </select>
 
             <button type="submit" class="button">Guardar Cambios</button>

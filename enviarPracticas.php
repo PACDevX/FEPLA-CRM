@@ -21,7 +21,8 @@ $profesorId = $_SESSION['user_id'];
     <title>Enviar Alumnos a Prácticas - FEPLA CRM</title>
     <link rel="stylesheet" href="./assets/css/main.css">
     <link rel="stylesheet" href="./assets/css/header.css">
-    <script src="./assets/js/popups.js" defer></script> <!-- Usando el archivo popups.js -->
+    <link rel="stylesheet" href="./assets/css/popups.css">
+    <script src="./assets/js/popups.js"></script> <!-- Usando el archivo popups.js -->
     <style>
         /* Estilos para la vista gráfica */
         .view-table {
@@ -58,8 +59,7 @@ $profesorId = $_SESSION['user_id'];
                                         FROM alumnos 
                                         WHERE profesor_id = $profesorId AND nombre IS NOT NULL AND nombre != ''");
                 while ($row = $result->fetch_assoc()) {
-                    echo "<option value='" . htmlspecialchars($row['id']) . "'>" .
-                        htmlspecialchars($row['nombre'] . ' ' . $row['apellido1'] . ' ' . $row['apellido2']) . "</option>";
+                    echo "<option value='" . htmlspecialchars($row['id']) . "'>" . htmlspecialchars($row['nombre'] . ' ' . $row['apellido1'] . ' ' . $row['apellido2']) . "</option>";
                 }
                 ?>
             </select>
@@ -90,7 +90,6 @@ $profesorId = $_SESSION['user_id'];
             </thead>
             <tbody>
                 <?php
-                // Mostrar asignaciones solo del profesor en sesión
                 $result = $conn->query("SELECT asignaciones.id AS asignacion_id, 
                                                alumnos.nombre, alumnos.apellido1, alumnos.apellido2, 
                                                empresas.id AS empresa_id, empresas.nombre AS empresa_nombre
@@ -106,7 +105,6 @@ $profesorId = $_SESSION['user_id'];
                     echo "<input type='hidden' name='asignacionId' value='" . htmlspecialchars($row['asignacion_id']) . "'>";
                     echo "<select name='empresaId'>";
 
-                    // Generar las opciones de empresa
                     $empresas = $conn->query("SELECT id, nombre FROM empresas");
                     while ($empresa = $empresas->fetch_assoc()) {
                         $selected = ($empresa['id'] == $row['empresa_id']) ? "selected" : "";

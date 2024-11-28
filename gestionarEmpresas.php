@@ -18,6 +18,7 @@ include './includes/dbConnection.php';
     <title>Gestión de Empresas - FEPLA CRM</title>
     <link rel="stylesheet" href="./assets/css/main.css">
     <link rel="stylesheet" href="./assets/css/header.css">
+    <link rel="stylesheet" href="./assets/css/popups.css">
     <script src="./assets/js/popups.js" defer></script> <!-- Usando el archivo popups.js -->
 </head>
 <body>

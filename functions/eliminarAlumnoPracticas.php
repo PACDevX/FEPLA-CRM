@@ -10,23 +10,22 @@ if (!isset($_SESSION['user_id'])) {
 include '../includes/dbConnection.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['asignacionId'])) {
-        $asignacionId = trim($_POST['asignacionId']);
+    $asignacionId = intval($_POST['asignacionId'] ?? 0);
 
-        // Eliminar la asignación de la tabla
+    if ($asignacionId > 0) {
         $deleteSql = "DELETE FROM asignaciones WHERE id = ?";
         $stmt = $conn->prepare($deleteSql);
         $stmt->bind_param("i", $asignacionId);
 
         if ($stmt->execute()) {
-            header("Location: ../enviarPracticas.php?message=Prácticas%20eliminadas%20satisfactoriamente&type=success");
+            header("Location: ../enviarPracticas.php?message=" . urlencode("Asignación eliminada correctamente."));
         } else {
-            header("Location: ../enviarPracticas.php?message=Error%20al%20eliminar%20las%20prácticas&type=error");
+            header("Location: ../enviarPracticas.php?error=" . urlencode("Error al eliminar la asignación."));
         }
 
         $stmt->close();
     } else {
-        header("Location: ../enviarPracticas.php?message=Error:%20Datos%20insuficientes&type=error");
+        header("Location: ../enviarPracticas.php?error=" . urlencode("Datos insuficientes para eliminar la asignación."));
     }
 }
 

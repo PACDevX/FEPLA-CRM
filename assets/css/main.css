@@ -63,3 +63,35 @@ button {
 button:hover {
     background-color: #0056b3;
 }
+
+/* Estilos para los popups */
+.popup-message {
+    position: fixed; /* Fijo para que siempre aparezca en la misma posición */
+    top: 20px; /* Separado del borde superior */
+    left: 50%; /* Centrando horizontalmente */
+    transform: translateX(-50%); /* Ajusta el centrado horizontal */
+    z-index: 9999; /* Asegúrate de que esté encima de otros elementos */
+    padding: 15px 25px; /* Espaciado interno */
+    border-radius: 5px; /* Bordes redondeados */
+    font-size: 14px; /* Tamaño del texto */
+    color: #fff; /* Texto en blanco */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra para darle profundidad */
+    opacity: 1; /* Totalmente visible inicialmente */
+    transition: opacity 0.5s ease, transform 0.5s ease; /* Suavidad en la desaparición */
+}
+
+/* Estilo para mensajes de éxito */
+.popup-message.success {
+    background-color: #28a745; /* Verde para éxito */
+}
+
+/* Estilo para mensajes de error */
+.popup-message.error {
+    background-color: #dc3545; /* Rojo para errores */
+}
+
+/* Efecto de desvanecimiento */
+.popup-message.fade-out {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px); /* Movimiento hacia arriba al desaparecer */
+}

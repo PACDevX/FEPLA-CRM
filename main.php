@@ -32,6 +32,7 @@ $totalEmpresas = $conn->query("SELECT COUNT(*) AS total FROM empresas")->fetch_a
     <title>Panel Principal - FEPLA CRM</title>
     <link rel="stylesheet" href="./assets/css/header.css">
     <link rel="stylesheet" href="./assets/css/main.css">
+    <link rel="stylesheet" href="./assets/css/popups.css">
 </head>
 <body>
     <?php include './includes/header.php'; ?>

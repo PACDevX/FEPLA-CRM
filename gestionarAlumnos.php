@@ -22,6 +22,7 @@ $profesorId = $_SESSION['user_id'];
     <title>Gestión de Alumnos - FEPLA CRM</title>
     <link rel="stylesheet" href="./assets/css/main.css">
     <link rel="stylesheet" href="./assets/css/header.css">
+    <link rel="stylesheet" href="./assets/css/popups.css">
     <script src="./assets/js/popups.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
@@ -126,14 +127,13 @@ $profesorId = $_SESSION['user_id'];
         <!-- Sección para eliminar o modificar un alumno -->
         <div class="section">
             <h2>Gestionar Alumnos</h2>
-            <form action="modificarAlumno.php" method="GET">
+            <form action="./functions/manageAlumno.php" method="POST">
                 <label for="alumnoSelect">Seleccionar Alumno (*):</label>
-                <select id="alumnoSelect" name="id" required>
-                    <!-- Mostrar alumnos del profesor actual -->
+                <select id="alumnoSelect" name="alumnoSelect" required>
                     <?php
                     $result = $conn->query("SELECT id, nombre, apellido1, apellido2, clase 
-                                            FROM alumnos 
-                                            WHERE profesor_id = $profesorId AND nombre != ''");
+                                FROM alumnos 
+                                WHERE profesor_id = $profesorId AND nombre != ''");
                     while ($row = $result->fetch_assoc()) {
                         echo "<option value='" . htmlspecialchars($row['id']) . "'>" .
                             htmlspecialchars($row['nombre'] . ' ' . $row['apellido1'] . ' ' . $row['apellido2'] . ' - ' . $row['clase']) .
@@ -141,10 +141,10 @@ $profesorId = $_SESSION['user_id'];
                     }
                     ?>
                 </select>
-
                 <button type="submit" name="action" value="delete" class="button">Eliminar Alumno</button>
-                <button type="submit" class="button">Modificar Datos</button>
+                <button type="submit" name="action" value="modify" class="button">Modificar Datos</button>
             </form>
+
         </div>
     </div>
 </body>

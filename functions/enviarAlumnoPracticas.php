@@ -3,55 +3,43 @@
 
 session_start();
 if (!isset($_SESSION['user_id'])) {
-    header("Location: index.html");
+    header("Location: ../index.html");
     exit;
 }
 
 include '../includes/dbConnection.php';
 
-function showPopup($message, $type) {
-    echo "<script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const popup = document.createElement('div');
-            popup.className = 'popup-message ' + '$type';
-            popup.textContent = '$message';
-            document.body.appendChild(popup);
-            setTimeout(() => { popup.style.opacity = '0'; setTimeout(() => popup.remove(), 500); }, 3000);
-        });
-    </script>";
-}
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $alumnoId = trim($_POST['alumnoId']);
-    $empresaId = trim($_POST['empresaId']);
-    $profesorId = $_SESSION['user_id']; // Obtener el ID del profesor desde la sesión
+    $alumnoId = intval($_POST['alumnoId']);
+    $empresaId = intval($_POST['empresaId']);
+    $profesorId = $_SESSION['user_id']; // ID del profesor actual
 
-    // Comprobar si el alumno ya está asignado a una empresa bajo el profesor actual
+    // Comprobar si el alumno ya está asignado
     $checkSql = "SELECT COUNT(*) FROM asignaciones WHERE alumno_id = ? AND profesor_id = ?";
     $checkStmt = $conn->prepare($checkSql);
     $checkStmt->bind_param("ii", $alumnoId, $profesorId);
     $checkStmt->execute();
-    $checkStmt->bind_result($count);
+    $checkStmt->bind_result($exists);
     $checkStmt->fetch();
     $checkStmt->close();
 
-    if ($count > 0) {
-        showPopup("El alumno ya está asignado a una empresa por este profesor.", "error");
-    } else {
-        // Asignar el alumno a la empresa bajo el profesor actual
-        $insertSql = "INSERT INTO asignaciones (alumno_id, empresa_id, profesor_id) VALUES (?, ?, ?)";
-        $insertStmt = $conn->prepare($insertSql);
-        $insertStmt->bind_param("iii", $alumnoId, $empresaId, $profesorId);
-
-        if ($insertStmt->execute()) {
-            showPopup("Alumno enviado a prácticas satisfactoriamente.", "success");
-        } else {
-            showPopup("Error al enviar al alumno a prácticas.", "error");
-        }
-
-        $insertStmt->close();
+    if ($exists > 0) {
+        header("Location: ../enviarPracticas.php?error=" . urlencode("El alumno ya está asignado a una empresa por este profesor."));
+        exit;
     }
+
+    // Insertar nueva asignación
+    $insertSql = "INSERT INTO asignaciones (alumno_id, empresa_id, profesor_id) VALUES (?, ?, ?)";
+    $insertStmt = $conn->prepare($insertSql);
+    $insertStmt->bind_param("iii", $alumnoId, $empresaId, $profesorId);
+
+    if ($insertStmt->execute()) {
+        header("Location: ../enviarPracticas.php?message=" . urlencode("Alumno enviado a prácticas correctamente."));
+    } else {
+        header("Location: ../enviarPracticas.php?error=" . urlencode("Error al enviar al alumno a prácticas."));
+    }
+
+    $insertStmt->close();
 }
 
 $conn->close();
-?>
