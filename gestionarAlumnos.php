@@ -53,6 +53,47 @@ $profesorId = $_SESSION['user_id'];
             </form>
         </div>
 
+        <!-- Sección para gestionar clases -->
+<div class="section">
+    <h2>Gestionar Clases</h2>
+    <form action="./functions/updateClass.php" method="POST">
+        <label for="classSelect">Seleccionar Clase (*):</label>
+        <select id="classSelect" name="classSelect" required>
+            <!-- Mostrar clases relacionadas con el profesor actual -->
+            <?php
+            $result = $conn->query("SELECT DISTINCT clase 
+                                    FROM alumnos 
+                                    WHERE clase != '' AND profesor_id = $profesorId");
+            while ($row = $result->fetch_assoc()) {
+                echo "<option value='" . htmlspecialchars($row['clase']) . "'>" . htmlspecialchars($row['clase']) . "</option>";
+            }
+            ?>
+        </select>
+        <label for="newClassName">Nuevo Nombre de la Clase:</label>
+        <input type="text" id="newClassName" name="newClassName" required>
+
+        <button type="submit" class="button">Modificar Clase</button>
+    </form>
+
+    <form action="./functions/deleteClass.php" method="POST">
+        <label for="classToDelete">Seleccionar Clase a Eliminar (*):</label>
+        <select id="classToDelete" name="classToDelete" required>
+            <!-- Mostrar clases relacionadas con el profesor actual -->
+            <?php
+            $result = $conn->query("SELECT DISTINCT clase 
+                                    FROM alumnos 
+                                    WHERE clase != '' AND profesor_id = $profesorId");
+            while ($row = $result->fetch_assoc()) {
+                echo "<option value='" . htmlspecialchars($row['clase']) . "'>" . htmlspecialchars($row['clase']) . "</option>";
+            }
+            ?>
+        </select>
+
+        <button type="submit" class="button">Eliminar Clase</button>
+    </form>
+</div>
+
+
         <!-- Sección para crear un alumno dentro de una clase -->
         <div class="section">
             <h2>Crear Alumno</h2>
