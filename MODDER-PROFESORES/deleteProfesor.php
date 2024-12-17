@@ -4,6 +4,7 @@ if (!isset($_SESSION['is_root']) || $_SESSION['is_root'] !== true) {
     header("Location: ../index.html");
     exit;
 }
+
 include '../includes/dbConnection.php';
 
 $profesorId = $_GET['id'];
@@ -13,9 +14,11 @@ $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $profesorId);
 
 if ($stmt->execute()) {
-    echo "Profesor eliminado exitosamente.";
+    // Redirigir a viewProfesores con un mensaje de éxito
+    header("Location: viewProfesores.php?message=" . urlencode("Profesor eliminado exitosamente."));
 } else {
-    echo "Error al eliminar: " . $stmt->error;
+    // Redirigir a viewProfesores con un mensaje de error
+    header("Location: viewProfesores.php?error=" . urlencode("Error al eliminar el profesor: " . $stmt->error));
 }
 
 $stmt->close();

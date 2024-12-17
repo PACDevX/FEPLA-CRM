@@ -13,19 +13,10 @@ if (!isset($_SESSION['is_root']) || $_SESSION['is_root'] !== true) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Profesores - MODDER</title>
     <link rel="stylesheet" href="assets/css/modder.css">
+    <script src="assets/js/popups.js"></script>
 </head>
 <body>
-    <header>
-        <h1>Gestión de Cuentas de Profesores</h1>
-        <nav>
-            <ul class="nav-menu">
-                <li><a href="createProfesor.php">Crear Profesor</a></li>
-                <li><a href="viewProfesores.php">Ver Profesores</a></li>
-                <li><a href="../main.php">Volver al CRM</a></li>
-                <li><a href="../functions/logout.php">Cerrar Sesión</a></li>
-            </ul>
-        </nav>
-    </header>
+    <?php include('includes/header.php'); ?> <!-- Incluir el header -->
 
     <main class="container">
         <section>
