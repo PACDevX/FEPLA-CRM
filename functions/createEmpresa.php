@@ -10,16 +10,32 @@ if (!isset($_SESSION['user_id'])) {
 include '../includes/dbConnection.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Recoger los datos del formulario
     $nombre = trim($_POST['nombre']);
+    $nombre_oficial = trim($_POST['nombre_oficial']);
+    $direccion_sede_central = trim($_POST['direccion_sede_central']);
+    $poblacion = trim($_POST['poblacion']);
+    $codigo_postal = trim($_POST['codigo_postal']);
+    $provincia = trim($_POST['provincia']);
+    $web = trim($_POST['web']);
+    $correo_electronico_principal = trim($_POST['correo_electronico_principal']);
+    $actividad_principal = trim($_POST['actividad_principal']);
+    $otras_actividades = trim($_POST['otras_actividades']);
+    $descripcion_breve = trim($_POST['descripcion_breve']);
     $contacto_principal = trim($_POST['contacto_principal']);
-    $email = trim($_POST['email']);
-    $telefono = trim($_POST['telefono']);
 
-    if (!empty($nombre) && !empty($contacto_principal) && !empty($email) && !empty($telefono)) {
+    // Obtener el id del usuario que crea la empresa
+    $creado_por = $_SESSION['user_id'];
+    
+    // Estado por defecto
+    $estado = 'interesada'; 
+
+    // Verificar que los campos obligatorios no estén vacíos
+    if (!empty($nombre) && !empty($correo_electronico_principal)) {
         // Verificar si el correo electrónico ya existe
-        $checkEmailSql = "SELECT COUNT(*) FROM empresas WHERE email = ?";
+        $checkEmailSql = "SELECT COUNT(*) FROM empresas WHERE correo_electronico_principal = ?";
         $checkEmailStmt = $conn->prepare($checkEmailSql);
-        $checkEmailStmt->bind_param("s", $email);
+        $checkEmailStmt->bind_param("s", $correo_electronico_principal);
         $checkEmailStmt->execute();
         $checkEmailStmt->bind_result($emailCount);
         $checkEmailStmt->fetch();
@@ -36,16 +52,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Verificar si el correo o el nombre de la empresa ya existen
         if ($emailCount > 0) {
-            // Si el correo ya existe, redirigir con un mensaje de error
             header("Location: ../gestionarEmpresas.php?message=El%20correo%20ya%20existe&type=error");
         } elseif ($nameCount > 0) {
-            // Si el nombre de la empresa ya existe, redirigir con un mensaje de error
             header("Location: ../gestionarEmpresas.php?message=El%20nombre%20de%20la%20empresa%20ya%20existe&type=error");
         } else {
-            // Preparar la consulta para insertar una empresa
-            $sql = "INSERT INTO empresas (nombre, contacto_principal, email, telefono) VALUES (?, ?, ?, ?)";
+            // Insertar la nueva empresa en la base de datos
+            $sql = "INSERT INTO empresas (nombre, nombre_oficial, direccion_sede_central, poblacion, codigo_postal, provincia, web, correo_electronico_principal, actividad_principal, otras_actividades, descripcion_breve, contacto_principal, estado, creado_por) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param("ssss", $nombre, $contacto_principal, $email, $telefono);
+            $stmt->bind_param("sssssssssssssi", $nombre, $nombre_oficial, $direccion_sede_central, $poblacion, $codigo_postal, $provincia, $web, $correo_electronico_principal, $actividad_principal, $otras_actividades, $descripcion_breve, $contacto_principal, $estado, $creado_por);
 
             if ($stmt->execute()) {
                 header("Location: ../gestionarEmpresas.php?message=Empresa%20creada%20exitosamente&type=success");
@@ -56,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt->close();
         }
     } else {
-        header("Location: ../gestionarEmpresas.php?message=Todos%20los%20campos%20son%20obligatorios&type=error");
+        header("Location: ../gestionarEmpresas.php?message=Los%20campos%20nombre%20y%20correo%20electrónico%20son%20obligatorios&type=error");
     }
 }
 

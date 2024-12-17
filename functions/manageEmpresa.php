@@ -12,17 +12,18 @@ include '../includes/dbConnection.php';
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $action = $_POST['action'];
     $empresaId = trim($_POST['empresaSelect']);
+    $modificado_por = $_SESSION['user_id'];  // Quién modifica los datos
 
     if ($action === 'delete') {
-        // Eliminar la empresa
-        $sql = "DELETE FROM empresas WHERE id = ?";
+        // Deshabilitar la empresa (no eliminar)
+        $sql = "UPDATE empresas SET estado = 'ya_no_existe', modificado_por = ? WHERE id = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("i", $empresaId);
+        $stmt->bind_param("ii", $modificado_por, $empresaId);
 
         if ($stmt->execute()) {
-            header("Location: ../gestionarEmpresas.php?message=Empresa%20eliminada%20exitosamente&type=success");
+            header("Location: ../gestionarEmpresas.php?message=Empresa%20deshabilitada%20exitosamente&type=success");
         } else {
-            header("Location: ../gestionarEmpresas.php?message=Error%20al%20eliminar%20la%20empresa&type=error");
+            header("Location: ../gestionarEmpresas.php?message=Error%20al%20deshabilitar%20la%20empresa&type=error");
         }
 
         $stmt->close();
@@ -33,4 +34,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 $conn->close();
+
 ?>

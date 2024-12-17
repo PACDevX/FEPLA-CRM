@@ -13,11 +13,12 @@ include './includes/dbConnection.php';
 $empresaId = $_GET['id'];
 
 // Recuperar los datos actuales de la empresa
-$sql = "SELECT nombre, contacto_principal, email, telefono FROM empresas WHERE id = ?";
+$sql = "SELECT nombre, nombre_oficial, direccion_sede_central, poblacion, codigo_postal, provincia, web, correo_electronico_principal, actividad_principal, otras_actividades, descripcion_breve, contacto_principal, estado, fecha_creacion, fecha_modificacion
+        FROM empresas WHERE id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $empresaId);
 $stmt->execute();
-$stmt->bind_result($nombre, $contacto_principal, $email, $telefono);
+$stmt->bind_result($nombre, $nombre_oficial, $direccion_sede_central, $poblacion, $codigo_postal, $provincia, $web, $correo_electronico_principal, $actividad_principal, $otras_actividades, $descripcion_breve, $contacto_principal, $estado, $fecha_creacion, $fecha_modificacion);
 $stmt->fetch();
 $stmt->close();
 ?>
@@ -39,23 +40,73 @@ $stmt->close();
         <h1>Modificar Empresa</h1>
 
         <form action="./functions/updateEmpresa.php" method="POST">
-            <input type="hidden" name="id" value="<?php echo htmlspecialchars($empresaId); ?>">
+    <input type="hidden" name="id" value="<?php echo htmlspecialchars($empresaId); ?>">
 
-            <label for="nombre">Nombre de la Empresa (*):</label>
-            <input type="text" id="nombre" name="nombre" value="<?php echo htmlspecialchars($nombre); ?>" required>
+    <label for="nombre">Nombre de la Empresa (*):</label>
+    <input type="text" id="nombre" name="nombre" value="<?php echo htmlspecialchars($nombre); ?>" required>
 
-            <label for="contacto_principal">Contacto Principal (*):</label>
-            <input type="text" id="contacto_principal" name="contacto_principal" value="<?php echo htmlspecialchars($contacto_principal); ?>" required>
+    <label for="nombre_oficial">Nombre Oficial:</label>
+    <input type="text" id="nombre_oficial" name="nombre_oficial" value="<?php echo htmlspecialchars($nombre_oficial); ?>">
 
-            <label for="email">Correo Electrónico (*):</label>
-            <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($email); ?>" required>
+    <label for="direccion_sede_central">Dirección Sede Central:</label>
+    <input type="text" id="direccion_sede_central" name="direccion_sede_central" value="<?php echo htmlspecialchars($direccion_sede_central); ?>">
 
-            <label for="telefono">Teléfono (*):</label>
-            <input type="text" id="telefono" name="telefono" value="<?php echo htmlspecialchars($telefono); ?>" required>
+    <label for="poblacion">Población:</label>
+    <input type="text" id="poblacion" name="poblacion" value="<?php echo htmlspecialchars($poblacion); ?>">
 
-            <button type="submit" class="button">Guardar Cambios</button>
-            <a href="gestionarEmpresas.php" class="button">Cancelar</a>
-        </form>
+    <label for="codigo_postal">Código Postal:</label>
+    <input type="text" id="codigo_postal" name="codigo_postal" value="<?php echo htmlspecialchars($codigo_postal); ?>">
+
+    <label for="provincia">Provincia:</label>
+    <input type="text" id="provincia" name="provincia" value="<?php echo htmlspecialchars($provincia); ?>">
+
+    <label for="web">Página Web:</label>
+    <input type="url" id="web" name="web" value="<?php echo htmlspecialchars($web); ?>">
+
+    <label for="correo_electronico_principal">Correo Electrónico Principal:</label>
+    <input type="email" id="correo_electronico_principal" name="correo_electronico_principal" value="<?php echo htmlspecialchars($correo_electronico_principal); ?>">
+
+    <label for="actividad_principal">Actividad Principal:</label>
+    <textarea id="actividad_principal" name="actividad_principal"><?php echo htmlspecialchars($actividad_principal); ?></textarea>
+
+    <label for="otras_actividades">Otras Actividades:</label>
+    <textarea id="otras_actividades" name="otras_actividades"><?php echo htmlspecialchars($otras_actividades); ?></textarea>
+
+    <label for="descripcion_breve">Descripción Breve:</label>
+    <textarea id="descripcion_breve" name="descripcion_breve"><?php echo htmlspecialchars($descripcion_breve); ?></textarea>
+
+    <label for="contacto_principal">Contacto Principal:</label>
+    <select id="contacto_principal" name="contacto_principal">
+        <?php
+        // Recuperamos los contactos de la base de datos y limpiamos cualquier HTML no permitido
+        $result_contactos = $conn->query("SELECT id, nombre FROM contactos_empresas");
+        while ($row_contacto = $result_contactos->fetch_assoc()) {
+            $nombre_contacto = strip_tags($row_contacto['nombre']);
+            $selected = ($row_contacto['id'] == $contacto_principal) ? 'selected' : '';
+            echo "<option value='" . htmlspecialchars($row_contacto['id']) . "' $selected>" . htmlspecialchars($nombre_contacto) . "</option>";
+        }
+        ?>
+    </select>
+
+    <label for="estado">Estado (*):</label>
+    <select id="estado" name="estado" required>
+        <option value="interesada" <?php echo ($estado == 'interesada') ? 'selected' : ''; ?>>Interesada</option>
+        <option value="no_interesada" <?php echo ($estado == 'no_interesada') ? 'selected' : ''; ?>>No Interesada</option>
+        <option value="ya_no_existe" <?php echo ($estado == 'ya_no_existe') ? 'selected' : ''; ?>>Ya No Existe</option>
+    </select>
+
+    <label>Fecha de Creación:</label>
+    <input type="text" value="<?php echo htmlspecialchars($fecha_creacion); ?>" disabled>
+
+    <label>Última Modificación:</label>
+    <input type="text" value="<?php echo htmlspecialchars($fecha_modificacion); ?>" disabled>
+
+    <label for="explicacion">Explicación de los Cambios:</label>
+    <textarea id="explicacion" name="explicacion" required></textarea>
+
+    <button type="submit" class="button">Guardar Cambios</button>
+    <a href="gestionarEmpresas.php" class="button">Cancelar</a>
+</form>
     </div>
 </body>
 </html>

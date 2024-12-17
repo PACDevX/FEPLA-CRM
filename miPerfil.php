@@ -13,11 +13,11 @@ include './includes/dbConnection.php';
 $profesorId = $_SESSION['user_id'];
 
 // Obtener los datos actuales del profesor
-$sql = "SELECT nombre, email, apellido, descripcion FROM profesores WHERE id = ?";
+$sql = "SELECT nombre, email, apellido1, apellido2, descripcion FROM profesores WHERE id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $profesorId);
 $stmt->execute();
-$stmt->bind_result($nombre, $email, $apellido, $descripcion);
+$stmt->bind_result($nombre, $email, $apellido1, $apellido2, $descripcion);
 $stmt->fetch();
 $stmt->close();
 ?>
@@ -46,11 +46,14 @@ $stmt->close();
             <label for="email">Correo Electrónico (*):</label>
             <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($email); ?>" required>
 
-            <label for="apellido">Apellido (*):</label>
-            <input type="text" id="apellido" name="apellido" value="<?php echo htmlspecialchars($apellido); ?>" required>
+            <label for="apellido1">Apellido 1 (*):</label>
+            <input type="text" id="apellido1" name="apellido1" value="<?php echo htmlspecialchars($apellido1); ?>" required>
 
-            <label for="descripcion">Descripción (*):</label>
-            <textarea id="descripcion" name="descripcion" required><?php echo htmlspecialchars($descripcion); ?></textarea>
+            <label for="apellido2">Apellido 2:</label>
+            <input type="text" id="apellido2" name="apellido2" value="<?php echo htmlspecialchars($apellido2); ?>">
+
+            <label for="descripcion">Descripción:</label>
+            <textarea id="descripcion" name="descripcion"><?php echo htmlspecialchars($descripcion); ?></textarea>
 
             <button type="submit" class="button">Guardar Cambios</button>
         </form>
